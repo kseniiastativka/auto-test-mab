@@ -3,7 +3,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class LoginPageTest extends BaseTest {
+public class LoginTest extends BaseTest {
 
     @DataProvider(name = "invalidCreds")
     private Object[][] createInvalidCreds() {
