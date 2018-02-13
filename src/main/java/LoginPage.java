@@ -1,9 +1,9 @@
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class LoginPage {
-    private WebDriver driver; // TODO why not private?
+    private WebDriver driver;
 
     private By loginLocator = By.id("login");
     private By passwordLocator = By.id("password");
@@ -17,35 +17,42 @@ public class LoginPage {
     }
 
 
-//        Assert.assertTrue(isElementPresent(By.className("all-operations")), "No such block 'all-operations' on the main page");
 
-    public LoginPage login(String login, String password) {
-        driver.findElement(loginLocator).sendKeys(login);
-        driver.findElement(passwordLocator).sendKeys(password);
-        driver.findElement(loginButtonLocator).click();
-        if (isElementPresent(otpLocator)) {
-            driver.findElement(otpLocator).sendKeys("0000");
-            driver.findElement(otpSubmitButtonLocator).click();
-        }
-        return this; // TODO what do we return? LoginPage or HomePage?
+    public LoginPage loginWithIncorrectCreds(String login, String password) {
+        tryLogin(login, password);
+        return this;
+    }
+
+    public HomePage loginWithCorrectCreds(String login, String password) {
+        tryLogin(login, password);
+        return new HomePage(driver);
     }
 
     public String getLoginErrorNotification() {
-        if (isElementPresent(notificationContentLocator)) {
+        if (Utils.isElementPresent(driver, notificationContentLocator)) {
             return driver.findElement(notificationContentLocator).getText();
         }
         return "";
     }
 
-    // TODO extract to separate utils class
-    public boolean isElementPresent(By locator) {
-        try {
-            driver.findElement(locator);
-            return true;
-        } catch (NoSuchElementException ex) {
-            return false;
-        }
+    public LoginPage open() {
+        driver.get("https://my.alfabank.com.ua");
+        return this;
     }
 
+    private void tryLogin(String login, String password) {
+        WebElement loginInput = driver.findElement(loginLocator);
+        loginInput.clear();
+        loginInput.sendKeys(login);
 
+        WebElement passwordInput = driver.findElement(passwordLocator);
+        passwordInput.clear();
+        passwordInput.sendKeys(password);
+
+        driver.findElement(loginButtonLocator).click();
+        if (Utils.isElementPresent(driver, otpLocator)) {
+            driver.findElement(otpLocator).sendKeys("0000");
+            driver.findElement(otpSubmitButtonLocator).click();
+        }
+    }
 }
