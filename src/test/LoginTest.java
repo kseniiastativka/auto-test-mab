@@ -23,8 +23,8 @@ public class LoginTest extends BaseTest {
 
     @Test
     public void testTransitionToHomePage() {
-        HomePage homePage = loginPage.loginWithCorrectCreds("****", "****"); //TODO DELETE creds
-        Assert.assertTrue(homePage.isAllOperationsPresent(), "No such block 'all-operations' on the main page");
+        HomePage homePage = loginPage.loginWithCorrectCreds("", ""); //TODO DELETE creds
+        Assert.assertEquals(homePage.getAllOperationsText(), "Останні операції в My Alfa-Bank (5)"); //TODO quantity of operations isn't static
     }
 
 

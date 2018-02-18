@@ -20,7 +20,7 @@ public class LoginPage {
 
     public LoginPage loginWithIncorrectCreds(String login, String password) {
         tryLogin(login, password);
-        return this;
+        return new LoginPage(driver);
     }
 
     public HomePage loginWithCorrectCreds(String login, String password) {
@@ -50,6 +50,7 @@ public class LoginPage {
         passwordInput.sendKeys(password);
 
         driver.findElement(loginButtonLocator).click();
+
         if (Utils.isElementPresent(driver, otpLocator)) {
             driver.findElement(otpLocator).sendKeys("0000");
             driver.findElement(otpSubmitButtonLocator).click();
